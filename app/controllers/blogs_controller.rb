@@ -5,34 +5,17 @@ class BlogsController < ApplicationController
     @blogs = Blog.all
   end
 
-  # afficher les liste des Blogs : creer l'action new  avec une instance +  la vu new.html.erb
-  # ajouteer l'instance dans le formulaire vue par @blog
   def new
     @blog = Blog.new
   end
 
-  # creer un nouvo blog: poster il faut creer l'action create
-
-
-
-
-  # def create
-  #   @blog = Blog.new(blog_params)
-  #     if @blog.save
-  #       # 一覧画面へ遷移して"I have created a blog!"とメッセージを表示します。
-  #    redirect_to blogs_path, notice: "I have created a blog!"
-  #  else
-  #    render :new
-  #  end
-  #   # renvoi une nvlle page pour poster a nouveau un blog redirect_to
-  #   #"/blogs/new"= redirect_to new_blog_path
-  #   #redirect_to "/blogs/new"
-  #   #redirect_to new_blog_path
-  # end
-
 
   def create
-    @blog = Blog.new(blog_params)
+    # pour remplacer @blog et @blog.user_id
+   @blog = current_user.blogs.build(blog_params)
+    #@blog = Blog.new(blog_params)
+    # insert the vlue of forreign key
+    #@blog.user_id = current_user.id
     if params[:back]
       render :new
     else
@@ -43,15 +26,6 @@ class BlogsController < ApplicationController
       end
     end
   end
-
-
-
-
-
-
-
-
-
 
 
   # show action when show is called new.html is also called
@@ -78,10 +52,13 @@ class BlogsController < ApplicationController
     end
   end
 
-
-
   def confirm
-    @blog = Blog.new(blog_params)
+# pour remplacer @blog et @blog.user_id
+  #  @blog = current_user.blogs.build(blog_params)
+  @blog = current_user.blogs.build(blog_params)
+    #@blog = Blog.new(blog_params)
+    # insert value forreign key
+    #@blog.user_id = current_user.id
     render :new if @blog.invalid?
   end
 
@@ -93,11 +70,5 @@ class BlogsController < ApplicationController
   def set_blog
     @blog = Blog.find(params[:id])
   end
-
-
-
-# fin action create
-
-
 
 end
